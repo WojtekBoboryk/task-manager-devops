@@ -39,6 +39,22 @@ services:
     networks:
       - frontend
 
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - backend
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - backend
+    restart: always
+
 volumes:
   pgdata:
 
