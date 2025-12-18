@@ -11,6 +11,8 @@ services:
     networks:
       - frontend 
       - backend
+    restart: unless-stopped
+    mem_limit: 512m
   
   db:
     image: postgres:15
@@ -27,6 +29,8 @@ services:
       retries: 10
     networks:
       - backend
+    restart: unless-stopped
+    mem_limit: 768m
 
   nginx:
     image: nginx:1.27
@@ -38,22 +42,27 @@ services:
       - app
     networks:
       - frontend
+    restart: unless-stopped
+    mem_limit: 128m
 
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
     networks:
       - backend
+    restart: unless-stopped
+    mem_limit: 128m
 
   redis:
     image: redis:7-alpine
     networks:
       - backend
-    restart: always
+    restart: unless-stopped
+    mem_limit: 256m
 
 volumes:
   pgdata:
